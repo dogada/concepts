@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": ".."
+    }
+  ],
+  "settings": {
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "cSpell.words": [
+      "dbmate",
+      "healthcheck",
+      "Insertable",
+      "concepts",
+      "Memolot",
+      "zapatos"
+    ],
+    "javascript.format.insertSpaceAfterConstructor": true,
+    "files.insertFinalNewline": true,
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.tsdk": "web/node_modules/typescript/lib",
+    "eslint.workingDirectories": ["./web"],
+    "cSpell.ignorePaths": [
+      "**/package-lock.json",
+      "**/node_modules/**",
+      "**/vscode-extension/**",
+      "**/.git/objects/**",
+      ".vscode"
+    ],
+    "cSpell.customFolderDictionaries": [".vscode/cspell.json"],
+    "files.associations": {
+      "**/web/src/db/zapatos/schema.ts": "plaintext"
+    },
+    "typescript.reportStyleChecksAsWarnings": false
+  }
+}

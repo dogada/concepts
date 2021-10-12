@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "es2020"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "target": "es2019",
+    "baseUrl": "./src/",
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "allowSyntheticDefaultImports": true // required for storeon
+  },
+  "exclude": ["node_modules", ".next", ".cache"],
+  "include": ["**/*.ts", "**/*.tsx"]
+}

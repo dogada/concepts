@@ -1,0 +1,12 @@
+{
+  "db": {
+    "connectionString": "{{DATABASE_URL}}"
+  },
+  "outDir": "./src/db",
+  "schemas": {
+    "public": {
+      "include": "*",
+      "exclude": ["schema_migrations"]
+    }
+  }
+}

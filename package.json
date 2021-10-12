@@ -1,0 +1,84 @@
+{
+  "name": "concepts",
+  "private": true,
+  "version": "21.1.0",
+  "description": "ConcepTS",
+  "main": "index.js",
+  "scripts": {
+    "test": "docker-compose run --rm web npm run test",
+    "build": "npm run build:prod && docker image ls | head",
+    "build:dev": "docker-compose build --force-rm",
+    "build:prod": "docker-compose -f docker-compose.yml build --force-rm",
+    "release": "npx release-it -- --only-version",
+    "configure-dev-env": "docker cp concepts_web_1:/app/node_modules web/",
+    "dev:docker": "docker-compose",
+    "dev": "docker-compose up -d web",
+    "dev:restart": "npm run dev:docker stop web && npm run dev",
+    "dev:shell": "docker-compose exec web bash",
+    "dev:cmd": "docker-compose exec web",
+    "dev:npm": "docker-compose exec web npm run",
+    "dev:npm-check": "npm run dev:cmd -- npx npm-check -u",
+    "dev:dbshell": "docker-compose exec db psql -U app app",
+    "dev:logs": "docker-compose logs -f --tail=100",
+    "dev:test": "npm run dev:cmd -- npm run test",
+    "dev:recreate": "npm run dev:docker -- rm -s -f web && npm run dev",
+    "stop": "docker-compose stop",
+    "prod": "npm run build:prod && npm run prod:reload",
+    "prod:reload": "docker service update --force concepts_dev_web",
+    "dc:user": "USER_ID=$(id -u):$(id -g) docker-compose",
+    "test:e2e": "npm run dc:user -- run --rm e2e npx codeceptjs run --steps",
+    "e2e:shell": "npm run dc:user -- run --rm e2e bash",
+    "migrate": "docker-compose run --rm dbmate",
+    "migrate:replay": "npm run dbmate down && npm run dbmate up && npm run dev:cmd zapatos"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogada/concepts.git"
+  },
+  "author": "Dmytro V. Dohadailo",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/dogada/concepts/issues"
+  },
+  "homepage": "https://github.com/dogada/concepts",
+  "devDependencies": {
+    "@csmith/release-it-calver-plugin": "^1.0.2",
+    "cross-env": "^7.0.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.5.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "web/*.{ts,tsx,jsx}": [
+      "web/node_modules/.bin/eslint --cache"
+    ],
+    "*.{disabled}": [
+      "web/node_modules/.bin/jest --bail --findRelatedTests"
+    ]
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": [
+        "echo Starting new release..."
+      ],
+      "after:bump": "npm run build",
+      "after:git:release": [
+      ],
+      "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+    },
+    "github": {
+      "release": false
+    },
+    "gitlab": {
+      "release": true
+    },
+    "npm": {
+      "publish": false
+    }
+  },
+  "dependencies": {}
+}

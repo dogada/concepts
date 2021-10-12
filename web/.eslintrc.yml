@@ -1,0 +1,56 @@
+root: true
+parser: '@typescript-eslint/parser'
+extends:
+  - 'eslint:recommended'
+  - 'plugin:prettier/recommended'
+  - 'plugin:@typescript-eslint/eslint-recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:react/recommended'
+plugins:
+  - '@typescript-eslint'
+  - prettier
+  - fp
+settings:
+  react:
+    version: detect
+env:
+  es6: true
+rules:
+  prettier/prettier: error
+  react/prop-types: 0
+  react/react-in-jsx-scope: 0
+  '@typescript-eslint/ban-ts-comment': off
+  '@typescript-eslint/ban-types': off
+  '@typescript-eslint/no-explicit-any': warn
+  max-lines: # max file lines
+    - warn
+    - 300
+  max-lines-per-function:
+    - warn
+    - 80
+  complexity:
+    - warn
+    - 7
+  max-nested-callbacks:
+    - warn
+    - 2
+  max-depth:
+    - warn
+    - 3
+  fp/no-mutating-assign: warn
+  #fp/no-mutating-methods: warn
+  #fp/no-mutation: warn
+  fp/no-let: warn
+  no-param-reassign: warn
+  space-before-function-paren:
+    - off
+    - anonymous: always
+      named: never
+      asyncArrow: always
+overrides:
+  - files:
+      - '*.js'
+    env:
+      node: true
+    rules:
+      '@typescript-eslint/no-var-requires': off

@@ -1,0 +1,8 @@
+printWidth: 80
+tabWidth: 2
+semi: false
+singleQuote: true
+jsxSingleQuote: false
+# for prettier-standard
+spaceBeforeFunctionParen: false
+trailingComma: none

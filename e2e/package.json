@@ -1,0 +1,19 @@
+{
+  "name": "wikiket-e2e-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "scripts": {
+    "test": "codeceptjs run",
+    "test:debug": "codeceptjs run -p pauseOnFail",
+    "def": "codeceptjs def",
+    "ui": "codecept-ui"
+  },
+  "dependencies": {
+    "codeceptjs": "^3.0.7",
+    "playwright": "^1.5.1",
+    "@codeceptjs/ui": "^0.4.5",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}

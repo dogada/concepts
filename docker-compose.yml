@@ -1,0 +1,82 @@
+# production config
+version: "3.4"
+services:
+  web:
+    image: "${WEB_PROD_IMAGE}"
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+      target: prod
+    depends_on:
+      # db:
+      #   condition: service_healthy
+      - db
+      - redis
+    environment:
+      - NODE_ENV=production
+      - DEBUG
+      - WEBSITE_URL
+      - DATABASE_URL=postgres://app:${APP_DB_PASSWORD}@db:5432/app?sslmode=disable
+      # TODO: find why dbmate ignores these env variables
+      #- DBMATE_MIGRATIONS_DIR=./src/db/migrations
+      #- DBMATE_SCHEMA_FILE=./src/db/schema.sql
+      - SESSION_SECRET
+      - GOOGLE_ID
+      - GOOGLE_SECRET
+      - TWITTER_KEY
+      - TWITTER_SECRET
+      # nginx config
+      - VIRTUAL_HOST=${DOMAIN}
+      - VIRTUAL_PORT=3000
+      - HTTPS_METHOD=noredirect
+      - NEXT_PUBLIC_GTM_ID
+    networks:
+      # - webproxy
+      - default
+      - traefik-public
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.concepts.entrypoints=${ENTRYPOINTS}
+        - traefik.http.routers.concepts.tls=${TLS:-false}
+        - traefik.http.routers.concepts.rule=Host(`${DOMAIN}`)
+        - traefik.http.services.concepts.loadbalancer.server.port=3000
+  dbmate:
+    image: "$PROJECT/dbmate"
+    build: ./dbmate
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://app:${APP_DB_PASSWORD}@db:5432/app?sslmode=disable
+  db:
+    image: postgres:14.0-bullseye
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.concepts.db == true
+          - node.labels.concepts.env == ${ENV}
+  redis:
+    image: redis:6.0.9-alpine
+  adminer:
+    image: adminer:4.7
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT}:8080"
+    depends_on:
+      - "db"
+volumes:
+  db_data:
+networks:
+  traefik-public:
+    external: true

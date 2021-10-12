@@ -1,0 +1,60 @@
+# development config
+version: "3.4"
+services:
+  web:
+    command: npm run dev
+    image: "${WEB_DEV_IMAGE}"
+    build:
+      target: dev
+    environment:
+      - NODE_ENV=development
+      - WEBSITE_URL=http://localhost:3001
+      - DOMAIN=loc.concepts.com
+    deploy:
+      labels:
+        - traefik.http.routers.concepts-web.rule=Host(`loc.concepts.com`)
+        - traefik.http.services.concepts-web.loadbalancer.server.port=3000
+        - traefik.constraint-label=traefik-public
+    volumes:
+      - ./web:/app
+      # use node_modules & .next from container
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "9230:9229"
+      - "3001:3000"
+    logging:
+      driver: "json-file"
+    healthcheck: # check health of production build only
+      disable: true
+  dbmate:
+    volumes:
+      - ./dbmate:/db
+  db:
+    image: postgres:14.0-bullseye
+    ports:
+      - "5432:5432"
+    # uncomment to log all SQL queries
+    # command: ['postgres', '-c', 'log_statement=all']
+    logging:
+      driver: "json-file"
+  redis:
+    image: redis:6.0-alpine
+  e2e:
+    image: concepts_e2e:latest
+    build:
+      context: ./e2e
+    volumes:
+      - ./e2e:/app
+      - /app/node_modules
+    environment:
+      - E2E_TEST_URL
+      - E2E_HEADLESS
+    logging:
+      driver: "json-file"
+    user: ${USER_ID}
+    depends_on:
+      - web
+    ports:
+      - "3333:3333"
+      - "2999:2999"
