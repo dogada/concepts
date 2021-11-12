@@ -6,7 +6,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2020"],
+    "lib": [
+      "dom",
+      "es2020"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -20,10 +23,21 @@
     "target": "es2019",
     "baseUrl": "./src/",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": [
+        "./*"
+      ]
     },
     "allowSyntheticDefaultImports": true // required for storeon
+    ,
+    "incremental": true
   },
-  "exclude": ["node_modules", ".next", ".cache"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".cache"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
