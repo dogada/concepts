@@ -1,4 +1,4 @@
-FROM node:16.10-bullseye-slim as base
+FROM node:16.13-bullseye-slim as base
 ENV NODE_ENV=production
 EXPOSE 3000
 EXPOSE 9229
