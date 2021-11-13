@@ -49,7 +49,7 @@ const Root: React.FC<unknown> = function ({ children }) {
         <AlertManager
           alerts={alerts}
           onAlertClose={onAlertClose}
-          className="position-fixed w-50 ml-50p z-10"
+          className="position-fixed w-50 ms-50p z-10"
         />
       </div>
       <div className="container-fluid" style={{ minHeight: '82vh' }}>

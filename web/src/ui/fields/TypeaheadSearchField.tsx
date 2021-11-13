@@ -11,7 +11,7 @@ type Props = {
   maxCount?: number
 }
 
-export const TypeaheadSearchField: React.FC<Props> = ({ maxCount = 10 }) => {
+export const TypeaheadSearchField: React.FC<Props> = () => {
   const [{ data, loading }, setQuery] = useApi(api.searchThings)
   const router = useRouter()
   const options = data?.items || []
@@ -28,7 +28,7 @@ export const TypeaheadSearchField: React.FC<Props> = ({ maxCount = 10 }) => {
 
   //FIX: remove style
   return (
-    <div className="input-group input-group-sm" style={{ width: '150px' }}>
+    <div className="input-group input-group-sm">
       <AsyncTypeahead
         id="searchField"
         isLoading={loading}

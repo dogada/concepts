@@ -7,11 +7,18 @@
   "settings": {
     "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
     "cSpell.words": [
+      "bootswatch",
+      "cloudfour",
+      "concepts",
       "dbmate",
       "healthcheck",
       "Insertable",
-      "concepts",
+      "linkify",
+      "localstorage",
       "Memolot",
+      "storeon",
+      "Typeahead",
+      "unfetch",
       "zapatos"
     ],
     "javascript.format.insertSpaceAfterConstructor": true,
