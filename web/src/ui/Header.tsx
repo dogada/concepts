@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
-import Form from 'react-bootstrap/Form'
 import Navbar from 'react-bootstrap/Navbar'
 import { useStoreon } from 'storeon/react'
 import { Events, State } from '~/store'
@@ -26,7 +25,7 @@ function AccountMenu() {
   const { me } = useStoreon<State, Events>('me')
   return (
     <DropdownButton
-      alignRight
+      align="end"
       title={me ? me.name?.charAt(0) : ''}
       id="accountMenu"
       className="float-right"
@@ -61,27 +60,31 @@ export default function Header(): React.ReactElement {
       expanded={true}
       className="justify-content-between"
     >
-      <Link href="/">
-        <Navbar.Brand href="/">
-          <img
-            src="/static/logo.png"
-            width="32"
-            height="32"
-            alt="W"
-            loading="lazy"
-          />
-        </Navbar.Brand>
-      </Link>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse
-        id="basic-navbar-nav"
-        className="justify-content-between"
-      >
-        <Form inline>
-          <TypeaheadSearchField />
-        </Form>
-        <AccountMenu />
-      </Navbar.Collapse>
+      <div className="container-fluid">
+        <Link href="/">
+          <Navbar.Brand href="/">
+            <img
+              src="/static/logo.png"
+              width="32"
+              height="32"
+              alt="W"
+              loading="lazy"
+            />
+          </Navbar.Brand>
+        </Link>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse
+          id="basic-navbar-nav"
+          className="justify-content-between"
+        >
+          <div className="row">
+            <div className="col">
+              <TypeaheadSearchField />
+            </div>
+          </div>
+          <AccountMenu />
+        </Navbar.Collapse>
+      </div>
     </Navbar>
   )
 }
