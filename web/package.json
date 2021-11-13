@@ -54,7 +54,7 @@
     "redis": "^3.1.0",
     "slugify": "^1.6.2",
     "storeon": "^3.1.4",
-    "zapatos": "^3.5.0"
+    "zapatos": "^5.0.0"
   },
   "devDependencies": {
     "@types/cookie-session": "^2.0.42",
