@@ -9,11 +9,11 @@ services:
     environment:
       - NODE_ENV=development
       - WEBSITE_URL=http://localhost:3001
-      - DOMAIN=loc.concepts.com
+      - DOMAIN=loc.$PROJECT.com
     deploy:
       labels:
-        - traefik.http.routers.concepts-web.rule=Host(`loc.concepts.com`)
-        - traefik.http.services.concepts-web.loadbalancer.server.port=3000
+        - traefik.http.routers.$PROJECT-web.rule=Host(`loc.$PROJECT.com`)
+        - traefik.http.services.$PROJECT-web.loadbalancer.server.port=3000
         - traefik.constraint-label=traefik-public
     volumes:
       - ./web:/app
@@ -41,7 +41,7 @@ services:
   redis:
     image: redis:6.0-alpine
   e2e:
-    image: concepts_e2e:latest
+    image: $PROJECT_e2e:latest
     build:
       context: ./e2e
     volumes:

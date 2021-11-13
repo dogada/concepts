@@ -39,10 +39,10 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.concepts.entrypoints=${ENTRYPOINTS}
-        - traefik.http.routers.concepts.tls=${TLS:-false}
-        - traefik.http.routers.concepts.rule=Host(`${DOMAIN}`)
-        - traefik.http.services.concepts.loadbalancer.server.port=3000
+        - traefik.http.routers.$PROJECT.entrypoints=${ENTRYPOINTS}
+        - traefik.http.routers.$PROJECT.tls=${TLS:-false}
+        - traefik.http.routers.$PROJECT.rule=Host(`${DOMAIN}`)
+        - traefik.http.services.$PROJECT.loadbalancer.server.port=3000
   dbmate:
     image: "$PROJECT/dbmate"
     build: ./dbmate
@@ -64,8 +64,8 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.concepts.db == true
-          - node.labels.concepts.env == ${ENV}
+          - node.labels.$PROJECT.db == true
+          - node.labels.$PROJECT.env == ${ENV}
   redis:
     image: redis:6.0.9-alpine
   adminer:
