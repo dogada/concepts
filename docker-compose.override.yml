@@ -41,7 +41,7 @@ services:
   redis:
     image: redis:6.0-alpine
   e2e:
-    image: $PROJECT_e2e:latest
+    image: "${PROJECT}_e2e:latest"
     build:
       context: ./e2e
     volumes:
