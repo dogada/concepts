@@ -1,0 +1,19 @@
+#!/bin/sh
+
+## Load env variables from .env in current dir and make it available for next command (emulates .env loading by docker-compose).
+## Usage:
+## dotenv $COMMAND
+## Based on https://stackoverflow.com/a/20909045
+
+unamestr=$(uname)
+
+if [ "$unamestr" = 'Linux' ]; then
+
+  env $(grep -v '^#' .env | xargs -d '\n') "$@"
+
+elif [ "$unamestr" = 'FreeBSD' ]; then
+
+  env $(grep -v '^#' .env | xargs -0) "$@"
+
+fi
+    

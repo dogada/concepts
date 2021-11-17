@@ -1,6 +1,5 @@
 #! /bin/sh
 
-cd "${0%/*}"
 export PROJECT_ID="$(basename $(pwd) | tr [A-Z] [a-z])"
 echo $PROJECT_ID
 export CONTAINER_ID=$(docker ps -q -f name="^${PROJECT_ID}_db" | head -1)

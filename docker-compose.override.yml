@@ -3,18 +3,13 @@ version: "3.4"
 services:
   web:
     command: npm run dev
-    image: "${WEB_DEV_IMAGE}"
+    image: "${IMAGE_PREFIX}/web_dev:$IMAGE_TAG"
     build:
       target: dev
     environment:
       - NODE_ENV=development
       - WEBSITE_URL=http://localhost:3001
       - DOMAIN=loc.$PROJECT.com
-    deploy:
-      labels:
-        - traefik.http.routers.$PROJECT-web.rule=Host(`loc.$PROJECT.com`)
-        - traefik.http.services.$PROJECT-web.loadbalancer.server.port=3000
-        - traefik.constraint-label=traefik-public
     volumes:
       - ./web:/app
       # use node_modules & .next from container
@@ -29,19 +24,16 @@ services:
       disable: true
   dbmate:
     volumes:
-      - ./dbmate:/db
+      - ./dbmate:/app/db
   db:
-    image: postgres:14.0-bullseye
     ports:
       - "5432:5432"
     # uncomment to log all SQL queries
     # command: ['postgres', '-c', 'log_statement=all']
     logging:
       driver: "json-file"
-  redis:
-    image: redis:6.0-alpine
   e2e:
-    image: "${PROJECT}_e2e:latest"
+    image: "${IMAGE_PREFIX}/e2e:$IMAGE_TAG"
     build:
       context: ./e2e
     volumes:
