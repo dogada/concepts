@@ -43,7 +43,6 @@ RUN npm i --production && npm cache clean --force
 COPY --from=build /app/.next /app/.next
 COPY --from=build /app/public /app/public
 COPY --from=build /app/healthcheck.js /app/
-COPY --from=build /app/db /app/db
 
 #USER root
 RUN du -h --max-depth=1 .
