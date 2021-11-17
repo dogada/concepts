@@ -1,0 +1,39 @@
+# production config
+version: "3.4"
+services:
+  web:
+    networks:
+      - default
+      - traefik-public
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.$PROJECT.entrypoints=${ENTRYPOINTS}
+        - traefik.http.routers.$PROJECT.tls=${TLS:-false}
+        - traefik.http.routers.$PROJECT.rule=Host(`${DOMAIN}`)
+        - traefik.http.services.$PROJECT.loadbalancer.server.port=3000
+  devops:
+    deploy:
+      replicas: 0
+  dbmate:
+    deploy:
+      replicas: 0
+      restart_policy:
+        condition: none
+        max_attempts: 0
+  db:
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.$PROJECT.db == ${ENV}
+  adminer:
+    deploy:
+      replicas: 0
+volumes:
+  db_data:
+networks:
+  traefik-public:
+    external: true

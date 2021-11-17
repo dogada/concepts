@@ -2,7 +2,7 @@
 version: "3.4"
 services:
   web:
-    image: "${WEB_PROD_IMAGE}"
+    image: "${IMAGE_PREFIX}/web:${IMAGE_TAG}"
     build:
       context: ./web
       dockerfile: ./Dockerfile
@@ -30,28 +30,24 @@ services:
       - VIRTUAL_PORT=3000
       - HTTPS_METHOD=noredirect
       - NEXT_PUBLIC_GTM_ID
-    networks:
-      # - webproxy
-      - default
-      - traefik-public
-    deploy:
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.routers.$PROJECT.entrypoints=${ENTRYPOINTS}
-        - traefik.http.routers.$PROJECT.tls=${TLS:-false}
-        - traefik.http.routers.$PROJECT.rule=Host(`${DOMAIN}`)
-        - traefik.http.services.$PROJECT.loadbalancer.server.port=3000
+  devops:
+    image: "${IMAGE_PREFIX}/devops:${IMAGE_TAG}"
+    build:
+      context: ./
+      dockerfile: ./devops/Dockerfile
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://app:${APP_DB_PASSWORD}@db:5432/app?sslmode=disable
   dbmate:
-    image: "$PROJECT/dbmate"
+    image: "${IMAGE_PREFIX}/dbmate:${IMAGE_TAG}"
     build: ./dbmate
     depends_on:
       - db
     environment:
       - DATABASE_URL=postgres://app:${APP_DB_PASSWORD}@db:5432/app?sslmode=disable
   db:
-    image: postgres:14.0-bullseye
+    image: postgres:14.1-alpine3.14
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -60,23 +56,14 @@ services:
     healthcheck:
       test: pg_isready -U postgres -h 127.0.0.1
       interval: 5s
-    deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.labels.$PROJECT.db == true
-          - node.labels.$PROJECT.env == ${ENV}
   redis:
-    image: redis:6.0.9-alpine
+    image: redis:6.2.6-alpine3.14
   adminer:
-    image: adminer:4.7
+    image: adminer:4.8.1
     restart: unless-stopped
     ports:
-      - "${ADMINER_PORT}:8080"
+      - "${ADMINER_PORT}:8081"
     depends_on:
       - "db"
 volumes:
   db_data:
-networks:
-  traefik-public:
-    external: true
