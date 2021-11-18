@@ -1,0 +1,27 @@
+# rename to .env and fill in your data
+ENV=local
+PROJECT=concepts
+IMAGE_PREFIX=concepts
+IMAGE_TAG=latest
+# root user created during db container initialization
+POSTGRES_USER=postgres
+# openssl rand -base64 15
+POSTGRES_PASSWORD=
+# restricted used created manually (see README)
+APP_DB_USER=app
+APP_DB_PASSWORD=
+DEBUG=concepts*,sql*
+SESSION_SECRET=
+GOOGLE_ID=
+GOOGLE_SECRET=
+TWITTER_KEY=
+TWITTER_SECRET=
+DOMAIN=localhost:3001
+# Use https:// in prod!
+WEBSITE_URL=http://localhost:3001
+ADMINER_PORT=8080
+
+#E2E_TEST_URL=https://concepts.user.project.com
+E2E_HEADLESS=1
+# Google tag manager
+NEXT_PUBLIC_GTM_ID=
